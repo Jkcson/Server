@@ -2,8 +2,60 @@
 <html>
   <head>
     <title>Login Page</title>
+    <style>
+      body {
+        background-color: #1A1A1A;
+        color: #FFFFFF;
+        text-align: center;
+        font-family: Arial, sans-serif;
+      }
+      
+      h2 {
+        margin-top: 50px;
+        margin-bottom: 30px;
+      }
+      
+      form {
+        display: inline-block;
+        text-align: left;
+        border-radius: 10px;
+        padding: 20px;
+        background-color: #0A0A0A;
+        box-shadow: 0px 0px 10px #000000;
+      }
+      
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+      
+      input[type="text"], input[type="password"] {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: none;
+      }
+      
+      button[type="submit"] {
+        background-color: #0F4C81;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 50px;
+        padding: 15px 30px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+      }
+      
+      button[type="submit"]:hover {
+        background-color: #0F639E;
+      }
+    </style>
     <script>
-      function checkCredentials() {
+      function checkCredentials(event) {
+        event.preventDefault();
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
         // Replace these with your actual username and password
@@ -13,11 +65,18 @@
           alert("Incorrect username or password. Please try again.");
         }
       }
+      
+      function submitOnEnter(event) {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          checkCredentials(event);
+        }
+      }
     </script>
   </head>
   <body>
     <h2>Login</h2>
-    <form>
+    <form onsubmit="checkCredentials(event)">
       <div>
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
@@ -26,7 +85,7 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
       </div>
-      <button type="button" onclick="checkCredentials()">Login</button>
+      <button type="submit">Login</button>
     </form>
   </body>
 </html>
