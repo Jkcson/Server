@@ -58,17 +58,25 @@
       }
     </style>
     <script>
-      function checkCredentials(event) {
-        event.preventDefault();
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
-        // Replace these with your actual username and password
-        if (username === "myusername" && password === "mypassword") {
-          window.location.href = "success.html";
-        } else {
-          document.getElementById("error-message").innerHTML = "Incorrect username or password. Please try again.";
-        }
+   function checkCredentials(event) {
+  event.preventDefault();
+  var username = document.getElementById("username").value;
+  var password = document.getElementById("password").value;
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      var credentials = JSON.parse(xhr.responseText);
+      if (username === credentials.username && password === credentials.password) {
+        window.location.href = "success.html";
+      } else {
+        document.getElementById("error-message").innerHTML = "Incorrect username or password. Please try again.";
       }
+    }
+  };
+  xhr.open("GET", "credentials.json", true);
+  xhr.send();
+}
+
       
       function clearError() {
         document.getElementById("error-message").innerHTML = "";
