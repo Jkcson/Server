@@ -71,7 +71,8 @@
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
         if (username === "myusername" && password === "mypassword") {
-          window.location.href = "success.html";
+          sessionStorage.setItem("authenticated", true);
+          window.location.href = "protected-page.html";
         } else {
           document.getElementById("error-message").innerHTML = "Incorrect username or password. Please try again.";
         }
@@ -79,6 +80,4 @@
     </script>
   </body>
 </html>
-
-
 
