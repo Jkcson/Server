@@ -1,75 +1,61 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Command Prompt</title>
-	<style type="text/css">
-		body {
-			background-color: #1f1f1f;
-			color: #fff;
-			font-family: monospace;
-			font-size: 14px;
-			overflow: hidden;
-		}
-
-		#terminal {
-			width: 100%;
-			height: 100%;
-			overflow: auto;
-			padding: 10px;
-			box-sizing: border-box;
-		}
-
-		#terminal:after {
-			content: "$ ";
-		}
-
-		#terminal-input {
-			outline: none;
-			border: none;
-			background-color: transparent;
-			color: #fff;
-			font-family: monospace;
-			font-size: 14px;
-			width: calc(100% - 20px);
-			margin: 0;
-			padding: 0;
-			display: inline-block;
-			vertical-align: bottom;
-			line-height: 20px;
-		}
-	</style>
-</head>
-<body>
-	<div id="terminal" contenteditable="true"></div>
-
-	<script type="text/javascript">
-		// Redirect user to login page if not logged in
-		if (!sessionStorage.getItem("authenticated")) {
-			window.location.href = "index.html";
-		}
-
-		document.getElementById("terminal").addEventListener("keydown", function(event) {
-			if (event.keyCode === 13) {
-				event.preventDefault();
-				var input = document.createElement("div");
-				input.textContent = "$ " + document.getElementById("terminal-input").textContent;
-				document.getElementById("terminal").appendChild(input);
-				document.getElementById("terminal-input").textContent = "";
-				
-				// Check if command exists in JSON file and send to server via AJAX
-				var command = input.textContent.substr(2);
-				var xhttp = new XMLHttpRequest();
-				xhttp.onreadystatechange = function() {
-					if (this.readyState == 4 && this.status == 200) {
-						console.log(this.responseText);
-					}
-				};
-				xhttp.open("POST", "server.py", true);
-				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-				xhttp.send("command=" + command);
-			}
-		});
-	</script>
-</body>
+  <head>
+    <title>CMD Terminal</title>
+    <style>
+      body {
+        background-color: black;
+        color: green;
+        font-family: "Lucida Console", Monaco, monospace;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CMD Terminal</h1>
+    <div id="terminal">
+      <form id="command-form">
+        <span>&gt;</span>
+        <input type="text" id="command-input" />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <script>
+      // Authentication code snippet
+      var username = prompt("Please enter your username:");
+      var password = prompt("Please enter your password:");
+      if (username === "your-username" && password === "your-password") {
+        sessionStorage.setItem("authenticated", true);
+      } else {
+        window.location.href = "index.html";
+      }
+      
+      // Handle the command form submission
+      var form = document.getElementById("command-form");
+      form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        var command = document.getElementById("command-input").value;
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              var response = xhr.responseText;
+              if (response === "Hello, world!") {
+                // Execute the Python script that prints "Hello, world!" in the console
+              } else {
+                // Handle other commands
+              }
+            } else {
+              console.log(xhr.status);
+            }
+          }
+        };
+        xhr.open("GET", "https://your-home-computer.com/check-command?command=" + command);
+        xhr.send();
+      });
+    </script>
+  </body>
 </html>
+
 
