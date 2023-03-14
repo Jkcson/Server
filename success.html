@@ -1,80 +1,70 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Command Terminal</title>
-    <style>
-      #terminal {
-        background-color: black;
-        color: white;
-        font-family: monospace;
-        font-size: 14px;
-        width: 600px;
-        height: 400px;
-        margin: 0 auto;
-        overflow-y: scroll;
-        white-space: pre-wrap;
-        padding: 10px;
-      }
-      #command {
-        background-color: black;
-        color: white;
-        font-family: monospace;
-        font-size: 14px;
-        border: none;
-        width: 100%;
-        box-sizing: border-box;
-        padding: 10px;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="terminal"></div>
-    <input type="text" id="command" placeholder="Enter a command...">
-    <script>
-      var terminal = document.getElementById('terminal');
-      var command = document.getElementById('command');
+<head>
+	<title>Command Prompt</title>
+	<style type="text/css">
+		body {
+			background-color: #1f1f1f;
+			color: #fff;
+			font-family: monospace;
+			font-size: 14px;
+			overflow: hidden;
+		}
 
-      // Add a new line to the terminal
-      function addLine(text) {
-        terminal.textContent += text + '\n';
-        terminal.scrollTop = terminal.scrollHeight;
-      }
+		#terminal {
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			padding: 10px;
+			box-sizing: border-box;
+		}
 
-      // Send a command to the server
-      function sendCommand(cmd) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/execute_command');
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-              addLine('> ' + cmd);
-              addLine(xhr.responseText);
-            } else {
-              addLine('Error: ' + xhr.status);
-            }
-            command.value = '';
-          }
-        };
-        xhr.send(JSON.stringify({command: cmd}));
-      }
+		#terminal:after {
+			content: "$ ";
+		}
 
-      // Handle command submission
-      command.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          var cmd = command.value.trim();
-          if (cmd) {
-            sendCommand(cmd);
-          }
-        }
-      });
+		#terminal-input {
+			outline: none;
+			border: none;
+			background-color: transparent;
+			color: #fff;
+			font-family: monospace;
+			font-size: 14px;
+			width: calc(100% - 20px);
+			margin: 0;
+			padding: 0;
+			display: inline-block;
+			vertical-align: bottom;
+			line-height: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div id="terminal" contenteditable="true"></div>
 
-      // Welcome message
-      addLine('Microsoft Windows [Version 10.0.19041.928]\n(c) Microsoft Corporation. All rights reserved.');
-      addLine('');
-      addLine('Type "help" for a list of available commands.');
-    </script>
-  </body>
+	<script type="text/javascript">
+		document.getElementById("terminal").addEventListener("keydown", function(event) {
+			if (event.keyCode === 13) {
+				event.preventDefault();
+				var input = document.createElement("div");
+				input.textContent = "$ " + document.getElementById("terminal-input").textContent;
+				document.getElementById("terminal").appendChild(input);
+				document.getElementById("terminal-input").textContent = "";
+				
+				// Check if command exists in JSON file and send to server via AJAX
+				var command = input.textContent.substr(2);
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						console.log(this.responseText);
+					}
+				};
+				xhttp.open("POST", "server.py", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send("command=" + command);
+			}
+		});
+	</script>
+</body>
 </html>
+
