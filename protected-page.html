@@ -54,6 +54,11 @@
         xhr.send();
       });
     </script>
+	  <script type="text/javascript">
+		// Redirect user to login page if not logged in
+		if (!sessionStorage.getItem("authenticated")) {
+			window.location.href = "index.html";
+		}
   </body>
 </html>
 
