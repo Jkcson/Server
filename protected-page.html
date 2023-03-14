@@ -1,63 +1,61 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>CMD Terminal</title>
-	<style type="text/css">
-		body {
-			background-color: black;
-			color: green;
-			font-family: Consolas, Courier, monospace;
-			font-size: 14px;
-			margin: 0;
-			padding: 0;
-		}
-		#terminal {
-			height: 100vh;
-			display: flex;
-			flex-direction: column;
-			justify-content: flex-end;
-			padding: 20px;
-			white-space: pre-wrap;
-			word-wrap: break-word;
-		}
-		#terminal::before {
-			content: "$ ";
-		}
-		#input {
-			background-color: transparent;
-			border: none;
-			color: green;
-			font-family: Consolas, Courier, monospace;
-			font-size: 14px;
-			outline: none;
-			padding: 0;
-			margin: 0;
-			width: 100%;
-		}
-		#input:focus::placeholder {
-			color: transparent;
-		}
-	</style>
-</head>
-<body>
-	<div id="terminal"></div>
-	<input id="input" type="text" placeholder="Type your command here...">
+  <head>
+    <title>CMD Terminal</title>
+    <style>
+      body {
+        background-color: black;
+        color: green;
+        font-family: "Lucida Console", Monaco, monospace;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CMD Terminal</h1>
+    <div id="terminal">
+      <form id="command-form">
+        <span>&gt;</span>
+        <input type="text" id="command-input" />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <script>
+      // Authentication code snippet
 	<script type="text/javascript">
-		var terminal = document.getElementById("terminal");
-		var input = document.getElementById("input");
-
-		input.addEventListener("keyup", function(event) {
-			if (event.key === "Enter") {
-				event.preventDefault();
-				var command = input.value;
-				input.value = "";
-				terminal.innerHTML += "$ " + command + "\n";
-				// Send command to home computer and perform action
-				// ...
-			}
-		});
-	</script>
-</body>
+		// Redirect user to login page if not logged in
+		if (!localStorage.getItem("loggedIn")) {
+		if (!sessionStorage.getItem("authenticated")) {
+			window.location.href = "index.html";
+		}
+      
+      // Handle the command form submission
+      var form = document.getElementById("command-form");
+      form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        var command = document.getElementById("command-input").value;
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              var response = xhr.responseText;
+              if (response === "Hello, world!") {
+                // Execute the Python script that prints "Hello, world!" in the console
+              } else {
+                // Handle other commands
+              }
+            } else {
+              console.log(xhr.status);
+            }
+          }
+        };
+        xhr.open("GET", "https://your-home-computer.com/check-command?command=" + command);
+        xhr.send();
+      });
+    </script>
+  </body>
 </html>
+
 
 
