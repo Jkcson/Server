@@ -43,6 +43,11 @@
 	<div id="terminal" contenteditable="true"></div>
 
 	<script type="text/javascript">
+		// Redirect user to login page if not logged in
+		if (!localStorage.getItem("loggedIn")) {
+			window.location.href = "login.html";
+		}
+
 		document.getElementById("terminal").addEventListener("keydown", function(event) {
 			if (event.keyCode === 13) {
 				event.preventDefault();
@@ -67,4 +72,5 @@
 	</script>
 </body>
 </html>
+
 
