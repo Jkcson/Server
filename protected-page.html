@@ -10,6 +10,32 @@
         font-size: 16px;
         line-height: 1.5;
       }
+      
+      #command-input {
+        border: none;
+        outline: none;
+        background-color: transparent;
+        color: green;
+        font-family: "Lucida Console", Monaco, monospace;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      
+      #command-input:focus {
+        outline: none;
+      }
+      
+      #command-form {
+        display: flex;
+      }
+      
+      #command-form span {
+        margin-right: 5px;
+      }
+      
+      #command-form button {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -18,17 +44,16 @@
       <form id="command-form">
         <span>&gt;</span>
         <input type="text" id="command-input" />
-        <button type="submit">Submit</button>
       </form>
     </div>
     <script>
       // Authentication code snippet
-	<script type="text/javascript">
-		// Redirect user to login page if not logged in
-		if (!localStorage.getItem("loggedIn")) {
-		if (!sessionStorage.getItem("authenticated")) {
-			window.location.href = "index.html";
-		}
+      // Redirect user to login page if not logged in
+      if (!localStorage.getItem("loggedIn")) {
+        if (!sessionStorage.getItem("authenticated")) {
+          window.location.href = "index.html";
+        }
+      }
       
       // Handle the command form submission
       var form = document.getElementById("command-form");
@@ -52,15 +77,19 @@
         };
         xhr.open("GET", "https://your-home-computer.com/check-command?command=" + command);
         xhr.send();
+        document.getElementById("command-input").value = "";
+      });
+      
+      // Handle the enter key press
+      var input = document.getElementById("command-input");
+      input.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          form.submit();
+        }
       });
     </script>
-	  <script type="text/javascript">
-		// Redirect user to login page if not logged in
-		if (!sessionStorage.getItem("authenticated")) {
-			window.location.href = "index.html";
-		}
   </body>
 </html>
-
 
 
