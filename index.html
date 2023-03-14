@@ -65,8 +65,7 @@
       <input type="submit" value="Login">
     </form>
     <script>
-      document.querySelector("#login-form").addEventListener("submit", checkCredentials);
-      function checkCredentials(event) {
+      document.querySelector("#login-form").addEventListener("submit", function(event) {
         event.preventDefault();
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
@@ -76,8 +75,7 @@
         } else {
           document.getElementById("error-message").innerHTML = "Incorrect username or password. Please try again.";
         }
-      }
+      });
     </script>
   </body>
 </html>
-
