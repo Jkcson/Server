@@ -23,13 +23,12 @@
     </div>
     <script>
       // Authentication code snippet
-      var username = prompt("Please enter your username:");
-      var password = prompt("Please enter your password:");
-      if (username === "your-username" && password === "your-password") {
-        sessionStorage.setItem("authenticated", true);
-      } else {
-        window.location.href = "index.html";
-      }
+	<script type="text/javascript">
+		// Redirect user to login page if not logged in
+		if (!localStorage.getItem("loggedIn")) {
+		if (!sessionStorage.getItem("authenticated")) {
+			window.location.href = "index.html";
+		}
       
       // Handle the command form submission
       var form = document.getElementById("command-form");
