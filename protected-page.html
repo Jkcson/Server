@@ -57,9 +57,18 @@
       
       // Handle the command form submission
       var form = document.getElementById("command-form");
+      var terminal = document.getElementById("terminal");
+      var commands = [];
       form.addEventListener("submit", function(event) {
         event.preventDefault();
         var command = document.getElementById("command-input").value;
+        if(command === "//clear") {
+          terminal.innerHTML = "";
+          commands = [];
+          document.getElementById("command-input").value = "";
+          return;
+        }
+        commands.push(command);
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
           if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -70,14 +79,18 @@
               } else {
                 // Handle other commands
               }
+              terminal.innerHTML += "<p>>" + command + "</p><p>" + response + "</p>";
+              terminal.scrollTop = terminal.scrollHeight;
             } else {
               console.log(xhr.status);
             }
           }
         };
-        xhr.open("GET", "https://your-home-computer.com/check-command?command=" + command);
+        xhr.open("GET", "https://jkcson.github.io/Server/check-command?command=" + command);
         xhr.send();
         document.getElementById("command-input").value = "";
+        terminal.innerHTML += "<p>>" + command + "</p>";
+        terminal.scrollTop = terminal.scrollHeight;
       });
       
       // Handle the enter key press
@@ -91,5 +104,3 @@
     </script>
   </body>
 </html>
-
-
