@@ -41,7 +41,6 @@
   <body>
     <h1>CMD Terminal</h1>
     <div id="terminal">
-      <div id="output"></div>
       <form id="command-form">
         <span>&gt;</span>
         <input type="text" id="command-input" />
@@ -56,38 +55,42 @@
         }
       }
       
-      var MAX_COMMANDS = 2; // Maximum number of commands to display
-      
-      var commands = []; // Array to store the commands
-      
       // Handle the command form submission
       var form = document.getElementById("command-form");
+      var terminal = document.getElementById("terminal");
+      var commands = [];
       form.addEventListener("submit", function(event) {
         event.preventDefault();
         var command = document.getElementById("command-input").value;
-        if (command === "//clear") {
-          clearOutput();
-        } else {
-          var xhr = new XMLHttpRequest();
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-              if (xhr.status === 200) {
-                var response = xhr.responseText;
-                appendToOutput("&gt; " + command + "<br>" + response);
-              } else {
-                console.log(xhr.status);
-              }
-            }
-          };
-          xhr.open("GET", "https://your-home-computer.com/check-command?command=" + command);
-          xhr.send();
-          appendToOutput("&gt; " + command);
-          commands.push(command);
-          if (commands.length > MAX_COMMANDS) {
-            commands.shift();
-          }
+        if(command === "//clear") {
+          terminal.innerHTML = "";
+          commands = [];
           document.getElementById("command-input").value = "";
+          return;
         }
+        commands.push(command);
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              var response = xhr.responseText;
+              if (response === "Hello, world!") {
+                // Execute the Python script that prints "Hello, world!" in the console
+              } else {
+                // Handle other commands
+              }
+              terminal.innerHTML += "<p>>" + command + "</p><p>" + response + "</p>";
+              terminal.scrollTop = terminal.scrollHeight;
+            } else {
+              console.log(xhr.status);
+            }
+          }
+        };
+        xhr.open("GET", "https://jkcson.github.io/Server/check-command?command=" + command);
+        xhr.send();
+        document.getElementById("command-input").value = "";
+        terminal.innerHTML += "<p>>" + command + "</p>";
+        terminal.scrollTop = terminal.scrollHeight;
       });
       
       // Handle the enter key press
@@ -98,21 +101,8 @@
           form.submit();
         }
       });
-      
-      // Helper function to append text to the output div
-      function appendToOutput(text) {
-        var output = document.getElementById("output");
-        output.innerHTML += text + "<br>";
-        output.scrollTop = output.scrollHeight;
-      }
-      
-      // Helper function to clear the output div
-      function clearOutput() {
-        var output = document.getElementById("output");
-        output.innerHTML = "";
-        commands = [];
-      }
     </script>
   </body>
 </html>
+
 
