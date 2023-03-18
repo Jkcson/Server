@@ -55,20 +55,13 @@
         }
       }
       
+      var commandHistory = [];
+
       // Handle the command form submission
       var form = document.getElementById("command-form");
-      var terminal = document.getElementById("terminal");
-      var commands = [];
       form.addEventListener("submit", function(event) {
         event.preventDefault();
         var command = document.getElementById("command-input").value;
-        if(command === "//clear") {
-          terminal.innerHTML = "";
-          commands = [];
-          document.getElementById("command-input").value = "";
-          return;
-        }
-        commands.push(command);
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
           if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -78,19 +71,19 @@
                 // Execute the Python script that prints "Hello, world!" in the console
               } else {
                 // Handle other commands
+                commandHistory.push(command);
+                var responseElement = document.createElement("div");
+                responseElement.innerHTML = "&gt; " + command;
+                document.getElementById("terminal").appendChild(responseElement);
               }
-              terminal.innerHTML += "<p>>" + command + "</p><p>" + response + "</p>";
-              terminal.scrollTop = terminal.scrollHeight;
             } else {
               console.log(xhr.status);
             }
           }
         };
-        xhr.open("GET", "https://jkcson.github.io/Server/check-command?command=" + command);
+        xhr.open("GET", "https://your-home-computer.com/check-command?command=" + command);
         xhr.send();
         document.getElementById("command-input").value = "";
-        terminal.innerHTML += "<p>>" + command + "</p>";
-        terminal.scrollTop = terminal.scrollHeight;
       });
       
       // Handle the enter key press
@@ -101,6 +94,20 @@
           form.submit();
         }
       });
+
+      // Handle the clear command
+      var clearCommand = "//clear";
+      var lastCommand = "";
+      input.addEventListener("input", function(event) {
+        if (input.value === clearCommand) {
+          document.getElementById("terminal").innerHTML = "";
+          commandHistory = [];
+          input.value = "";
+        }
+        lastCommand = input.value;
+      });
+
     </script>
   </body>
 </html>
+
