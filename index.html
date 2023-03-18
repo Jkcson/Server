@@ -69,7 +69,37 @@
         event.preventDefault();
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
-        if (username === "myusername" && password === "mypassword") {
+        if (username === "fetch('creds.txt')
+  .then(response => {
+    if (response.ok) {
+      return response.text();
+    }
+    throw new Error('Network response was not ok.');
+  })
+  .then(text => {
+    let lines = text.split('\n');
+    let specificLine = lines[lineNumber - 1]; // Replace lineNumber with the specific line you want to read (subtract 1 to convert from 1-based to 0-based index)
+    // Do something with the specific line, e.g. log it to the console
+    console.log('Specific line:', specificLine);
+  })
+  .catch(error => {
+    console.error('There was a problem fetching the file:', error);
+  });" && password === "fetch('creds.txt')
+  .then(response => {
+    if (response.ok) {
+      return response.text();
+    }
+    throw new Error('Network response was not ok.');
+  })
+  .then(text => {
+    let lines = text.split('\n');
+    let specificLine = lines[lineNumber - 2]; // Replace lineNumber with the specific line you want to read (subtract 1 to convert from 1-based to 0-based index)
+    // Do something with the specific line, e.g. log it to the console
+    console.log('Specific line:', specificLine);
+  })
+  .catch(error => {
+    console.error('There was a problem fetching the file:', error);
+  });") {
           sessionStorage.setItem("authenticated", true);
           window.location.href = "protected-page.html";
         } else {
